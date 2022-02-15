@@ -10,12 +10,12 @@ describe('it', () => {
   it('should works', () => {
     const div = document.createElement('div');
 
-    const Log = (props: any) => {
-      console.log(props);
+    const Log = (values: any) => {
+      console.log(values);
       return <></>;
     };
 
-    const LogWiFi = connect(Log, pick(['data']));
+    const LogWiFi = connect(Log);
 
     ReactDOM.render(
       <Context data={{ data: { name: 'init' } }}>
@@ -31,11 +31,12 @@ describe('it', () => {
               )}
             >
               <Consumer map={pick(['other-name', 'last'])}>{Log}</Consumer>
+              <LogWiFi data={{ data: { name2: 'OKOK' } }} merge />
             </Context.layer>
           </Context.layer>
           <LogWiFi />
         </Context.layer>
-        <LogWiFi />
+        <LogWiFi merge data={{ data: { name2: 'ok' } }} />
       </Context>,
       div
     );

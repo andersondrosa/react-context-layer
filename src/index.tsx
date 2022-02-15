@@ -46,8 +46,26 @@ const Consumer = ({ children: Child, map }: ConsumerProps) => {
   );
 };
 
-const connect = (component: FunctionComponent, map?: Function) => {
-  return () => <Consumer map={map}>{component}</Consumer>;
+export type ConnectProps = {
+  data?: object;
+  merge?: boolean;
+};
+
+const connect = (Component: FunctionComponent, map?: Function) => {
+  return ({ data, merge }: ConnectProps) => {
+    return (
+      <context.Consumer>
+        {(values: object) => {
+          if (data) {
+            values = !merge
+              ? Object.assign({}, values, data)
+              : mergeDeepRight(values, data);
+          }
+          return <Component {...(map ? map(values) : values)} />;
+        }}
+      </context.Consumer>
+    );
+  };
 };
 
 export { Context, useContext, Consumer, connect };
