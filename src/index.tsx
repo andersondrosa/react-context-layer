@@ -1,3 +1,4 @@
+import { path } from 'ramda';
 import React, { FunctionComponent, ReactNode } from 'react';
 import mergeDeepRight from './mergeDeepRight';
 
@@ -5,7 +6,7 @@ const context = React.createContext({});
 
 const useContext = () => {
   const data = React.useContext(context);
-  return { data };
+  return { data, get: (x: any) => path(x, data) };
 };
 
 export type ContextProps = { children?: ReactNode; data: object };
